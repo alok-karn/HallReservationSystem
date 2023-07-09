@@ -11,8 +11,24 @@ const pool = mysql.createPool({
 });
 
 const promisePool = pool.promise();
+// console.log("Connected to MySQL database successfully!");
+// console.log(typeof promisePool);
 
-console.log(promisePool);
+// if (promisePool) {
+//     console.log("Connected to MySQL database successfully!");
+// } else {
+//     console.log("Connection to MySQL database failed!");
+// }
+
+pool.getConnection((err, connection) => {
+    if (err) {
+        console.log("Connection to MySQL database failed!");
+        console.log(err);
+    } else {
+        console.log("Connected to MySQL database successfully!");
+        connection.release(); // release the connection to the pool
+    }
+});
 
 const executeQuery = async (query, params) => {
     return new Promise(async (resolve, reject) => {
